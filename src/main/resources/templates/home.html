@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Income and Expenses</title>
+    <script th:src="@{/home.js}"></script>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<div>
+    <div class="tab">
+        <button class="tablinks active" onclick="toggleType(event, 'Deposit')">Deposit</button>
+        <button class="tablinks" onclick="toggleType(event, 'Withdraw')">Withdraw</button>
+    </div>
+    <div id="Deposit" class="tabcontent">
+        <form method="post" action="/home/deposit">
+            <input type="submit" value="OK"/><br>
+            <label for="depositDate">Days</label>
+            <input type="date" id="depositDate" name="date"><br>
+            <label for="depositAmount">Money</label>
+            <input type="text" id="depositAmount" name="amount"><br>
+            <label for="depositDescription">Note</label>
+            <input type="text" id="depositDescription" name="description"><br>
+            <input type="hidden" name="userId" th:value="${userId}">
+            <input type="hidden" id="depositCategoryId" name="categoryId">
+        </form>
+        <h3>Category</h3>
+        <input type="button" th:each="category, iter : ${categoryList}"
+               th:value="${category.getCategoryName()}"
+               th:onclick="|selectCategory(${category.getCategoryId()})|"
+               th:if="${category.getCategoryType().equals('DEPOSIT')}"
+        >
+    </div>
+    <div id="Withdraw" class="tabcontent" style="display: none">
+        <form method="post" action="/home/withdraw">
+            <input type="submit" value="OK"/><br>
+            <label for="date">Days</label>
+            <input type="date" id="date" name="date"><br>
+            <label for="amount">Money</label>
+            <input type="text" id="amount" name="amount"><br>
+            <label for="description">Note</label>
+            <input type="text" id="description" name="description"><br>
+            <input type="hidden" id="userId" name="userId" th:value="${userId}">
+            <input type="hidden" id="categoryId" name="categoryId">
+        </form>
+        <h3>Category</h3>
+        <input type="button" th:each="category, iter : ${categoryList}"
+               th:value="${category.getCategoryName()}"
+               th:onclick="|selectCategory(${category.getCategoryId()})|"
+               th:if="${category.getCategoryType().equals('WITHDRAW')}">
+    </div>
+    <div>
+        <form action="/home/calendar" method="post">
+            <input type="submit" id="calendar" name="calendar" value="Calendar">
+            <input type="hidden" name="date" value="12/21/2023">
+            <input type="hidden" name="userId" th:value="${userId}">
+        </form>
+        <form action="/home/statistical" method="post">
+            <input type="submit" id="statistical" name="statistical" value="statistical">
+            <input type="hidden" name="date" value="">
+            <input type="hidden" name="userId" th:value="${userId}">
+        </form>
+    </div>
+
+
+    <script>
+        function toggleType(evt, type) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
+
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(type).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        function selectCategory(categoryId) {
+            document.querySelector("#categoryId").value = categoryId;
+            document.querySelector("#depositCategoryId").value = categoryId;
+        }
+    </script>
+</div>
+</body>
+</html>
