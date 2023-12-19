@@ -1,31 +1,55 @@
 package com.example.dacn.configs;
 
+import com.example.dacn.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
-import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
 
 @Configuration
-public class SecurityConfig {
-    @Bean
-    UserDetailsManager users(DataSource dataSource) throws SQLException {
-        return new JdbcUserDetailsManager(dataSource);
+@RequiredArgsConstructor
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private final UserService userService;
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService);
     }
 
-//    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests(authorize -> authorize
-                        .anyRequest().authenticated()
-                )
-                .formLogin()
-                .loginPage("/auth/login")
-                .permitAll();
-        return http.build();
+            .authorizeRequests(authorize -> authorize
+                    .antMatchers("/login", "/register", "/js/**", "/css/**")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated()
+            )
+            .formLogin()
+            .loginPage("/login")
+            .defaultSuccessUrl("/home", true)
+            .permitAll();
+    }
+
+    @Bean
+    UserDetailsManager users(DataSource dataSource) {
+        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
+        if (!jdbcUserDetailsManager.userExists("admin")) {
+            UserDetails user = User.builder()
+                    .username("admin")
+                    .password("{noop}123")
+                    .roles("USER")
+                    .build();
+            jdbcUserDetailsManager.createUser(user);
+        }
+        return jdbcUserDetailsManager;
     }
 }

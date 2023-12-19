@@ -3,22 +3,22 @@ package com.example.dacn.services;
 import com.example.dacn.dtos.WithdrawDTO;
 import com.example.dacn.entities.Withdraw;
 import com.example.dacn.repositories.WithdrawRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.dacn.utils.DateTimeUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-
 @Service
+@RequiredArgsConstructor
 public class WithdrawService {
-    @Autowired
-    private WithdrawRepository withdrawRepository;
+    private final WithdrawRepository withdrawRepository;
+    private final UserService userService;
 
     public WithdrawDTO save(WithdrawDTO withdrawDTO) {
         Withdraw withdraw = new Withdraw();
-        withdraw.setDate(new Timestamp(withdrawDTO.getDate().getTime()));
+        withdraw.setDate(DateTimeUtil.convertToTimeStamp(withdrawDTO.getDate()));
         withdraw.setAmount(withdrawDTO.getAmount());
         withdraw.setDescription(withdrawDTO.getDescription());
-        withdraw.setUserId(withdrawDTO.getUserId());
+        withdraw.setUserId(userService.getLoginUserId());
         withdraw.setCategoryId(withdrawDTO.getCategoryId());
         withdrawRepository.save(withdraw);
         return withdrawDTO;
