@@ -47,7 +47,7 @@
     <label for="sumAmount">SumAmount</label>
     <input type="text" id="sumAmount" readonly th:value="${calendarDTO.getSumAmount()}">
 </div>
-<form id="form" action="/home/calendar" method="post">
+<form id="form" th:action="@{/calendar}" method="post">
     <input type="hidden" name="userId" th:value="${calendarDTO.getUserId()}">
     <input type="hidden" name="date" id="date" >
 </form>

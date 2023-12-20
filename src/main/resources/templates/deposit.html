@@ -5,16 +5,12 @@
     <title>Deposit</title>
 </head>
 <body>
-<form action="/home/back" method="post">
+<form th:action="@{/home}" method="get">
     <h2>Deposit</h2>
     <input type="text" readonly disabled th:value="${deposit.getDate()}"/>
     <input type="text" readonly disabled th:value="${deposit.getAmount()}"/>
     <input type="text" readonly disabled th:value="${deposit.getDescription()}"/>
-    <input type="hidden" name="userId" th:value="${deposit.getUserId()}">
     <input type="submit" value="Go To Home">
 </form>
-
-<script>
-</script>
 </body>
 </html>

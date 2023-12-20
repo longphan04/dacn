@@ -5,14 +5,12 @@
     <title>Withdraw</title>
 </head>
 <body>
-<form action="/home/back" method="post">
+<form th:action="@{/home}" method="get">
     <h2>Withdraw</h2>
     <input type="text" readonly disabled th:value="${withdraw.getDate()}"/>
     <input type="text" readonly disabled th:value="${withdraw.getAmount()}"/>
     <input type="text" readonly disabled th:value="${withdraw.getDescription()}"/>
-    <input type="hidden" name="userId" th:value="${withdraw.getUserId()}">
     <input type="submit" value="Go To Home">
 </form>
-
 </body>
 </html>

@@ -7,18 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.sql.Timestamp;
 
-@Entity(name = "withdraws")
+@Entity(name = "authorities")
 @Getter
 @Setter
-public class Withdraw {
+public class Authority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userId;
-    private Long categoryId;
-    private Double amount;
-    private Timestamp date;
-    private String description;
+    private String authority;
+    private String username;
 }

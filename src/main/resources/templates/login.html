@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script th:src="@{/login.js}"></script>
+    <script th:src="@{/js/login.js}"></script>
     <meta charset="UTF-8">
     <title>Login</title>
 </head>
 <body>
 <h2>Login</h2>
-<form method="post" id="loginForm" action="/login">
+<div th:if="${param.error}" style="color: red">
+    Invalid username and password.</div>
+<span th:text="${param.error}"></span>
+<div th:if="${param.logout}">
+    You have been logged out.</div>
+<form method="post" id="loginForm" th:action="@{/login}">
     <label for="username">Username: </label>
-    <input type="text" id="username" name="username" value="qwe" required/><br>
+    <input type="text" id="username" name="username" value="abc" required/><br>
     <label for="password">Password: </label>
-    <input type="password" id="password" name="password" value="111" required/><br>
+    <input type="password" id="password" name="password" value="123" required/><br>
     <input type="submit" value="Login"/><br>
     <input type="button" onclick="register()" value="Register" />
 </form>

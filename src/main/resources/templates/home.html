@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Income and Expenses</title>
-    <script th:src="@{/home.js}"></script>
-    <link rel="stylesheet" th:href="@{/style.css}">
+    <script th:src="@{/js/home.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <div>
@@ -14,7 +14,7 @@
         <button class="tablinks" onclick="toggleType(event, 'Withdraw')">Withdraw</button>
     </div>
     <div id="Deposit" class="tabcontent">
-        <form method="post" action="/home/deposit">
+        <form method="post" th:action="@{/finance/deposit}">
             <input type="submit" value="OK"/><br>
             <label for="depositDate">Days</label>
             <input type="date" id="depositDate" name="date"><br>
@@ -22,7 +22,6 @@
             <input type="text" id="depositAmount" name="amount"><br>
             <label for="depositDescription">Note</label>
             <input type="text" id="depositDescription" name="description"><br>
-            <input type="hidden" name="userId" th:value="${userId}">
             <input type="hidden" id="depositCategoryId" name="categoryId">
         </form>
         <h3>Category</h3>
@@ -33,7 +32,7 @@
         >
     </div>
     <div id="Withdraw" class="tabcontent" style="display: none">
-        <form method="post" action="/home/withdraw">
+        <form method="post" th:action="@{/finance/withdraw}">
             <input type="submit" value="OK"/><br>
             <label for="date">Days</label>
             <input type="date" id="date" name="date"><br>
@@ -41,7 +40,6 @@
             <input type="text" id="amount" name="amount"><br>
             <label for="description">Note</label>
             <input type="text" id="description" name="description"><br>
-            <input type="hidden" id="userId" name="userId" th:value="${userId}">
             <input type="hidden" id="categoryId" name="categoryId">
         </form>
         <h3>Category</h3>
@@ -51,15 +49,13 @@
                th:if="${category.getCategoryType().equals('WITHDRAW')}">
     </div>
     <div>
-        <form action="/home/calendar" method="post">
-            <input type="submit" id="calendar" name="calendar" value="Calendar">
+        <form th:action="@{/calendar}" method="post">
+            <input type="submit" id="calendar" value="Calendar">
             <input type="hidden" name="date" value="12/21/2023">
-            <input type="hidden" name="userId" th:value="${userId}">
         </form>
-        <form action="/home/statistical" method="post">
+        <form th:action="@{/statistical}" method="post">
             <input type="submit" id="statistical" name="statistical" value="statistical">
             <input type="hidden" name="date" value="">
-            <input type="hidden" name="userId" th:value="${userId}">
         </form>
     </div>
 

@@ -3,22 +3,22 @@ package com.example.dacn.services;
 import com.example.dacn.dtos.DepositDTO;
 import com.example.dacn.entities.Deposit;
 import com.example.dacn.repositories.DepositRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.dacn.utils.DateTimeUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-
 @Service
+@RequiredArgsConstructor
 public class DepositService {
-    @Autowired
-    private DepositRepository depositRepository;
+    private final DepositRepository depositRepository;
+    private final UserService userService;
 
     public DepositDTO save(DepositDTO depositDTO) {
         Deposit deposit = new Deposit();
-        deposit.setDate(new Timestamp(depositDTO.getDate().getTime()));
+        deposit.setDate(DateTimeUtil.convertToTimeStamp(depositDTO.getDate()));
         deposit.setAmount(depositDTO.getAmount());
         deposit.setDescription(depositDTO.getDescription());
-        deposit.setUserId(depositDTO.getUserId());
+        deposit.setUserId(userService.getLoginUserId());
         deposit.setCategoryId(depositDTO.getCategoryId());
         depositRepository.save(deposit);
         return depositDTO;
