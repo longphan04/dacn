@@ -3,11 +3,9 @@ let month = date.getMonth();
 
 const day = document.querySelector(".calendar-dates");
 
-const currdate = document
-    .querySelector(".calendar-current-date");
+const currdate = document.querySelector(".calendar-current-date");
 
-const prenexIcons = document
-    .querySelectorAll(".calendar-navigation span");
+const prenexIcons = document.querySelectorAll(".calendar-navigation span");
 
 // Array of month names
 const months = [
@@ -55,9 +53,7 @@ const manipulate = () => {
         // Check if the current date is today
         let isToday = i === date.getDate()
         && month === new Date().getMonth()
-        && year === new Date().getFullYear()
-            ? "active"
-            : "";
+        && year === new Date().getFullYear() ? "active" : "";
         lit += `<li class="${isToday}" onclick="chooseDate('${month + 1}/${i}/${year}')">${i}</li>`;
     }
 
@@ -104,9 +100,7 @@ prenexIcons.forEach(icon => {
 
             // Set the month to the new month
             month = date.getMonth();
-        }
-
-        else {
+        } else {
 
             // Set the date to the current date
             date = new Date();

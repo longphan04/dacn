@@ -1,5 +1,11 @@
-function collectmoney(){
+function goToCalendar() {
+    window.location.href = "/calendar";
 }
 
-function pay(){
+function goToStatistical() {
+    window.location.href = "/statistical";
+}
+
+function goToDeposit(){
+    window.location.href = "/finance"
 }
