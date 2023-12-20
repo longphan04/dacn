@@ -6,6 +6,7 @@ import com.example.dacn.repositories.WithdrawRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -20,20 +21,24 @@ public class CalendarService {
     public CalendarDTO getCalendarInfo(CalendarDTO calendarDTO) {
         String username = userService.getLoginUsername();
         Date date = calendarDTO.getDate();
+        if (date == null) {
+            date = Date.from(Instant.now());
+        }
 
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         int year = localDate.getYear();
         int month = localDate.getMonthValue();
         int day = localDate.getDayOfMonth();
 
-        Double depositAmount = depositRepository.getDepositsInYear(username, year, month, day);
+        Double depositAmount = depositRepository.getDepositsOnDay(username, year, month, day);
         calendarDTO.setDepositAmount(depositAmount == null ? 0 : depositAmount);
 
-        Double withdrawAmount = withdrawRepository.getWithdrawsInYear(username, year, month, day);
+        Double withdrawAmount = withdrawRepository.getWithdrawsOnDay(username, year, month, day);
         calendarDTO.setWithdrawAmount(withdrawAmount == null ? 0 : withdrawAmount);
 
         Double sumAmount = calendarDTO.getDepositAmount() - calendarDTO.getWithdrawAmount();
         calendarDTO.setSumAmount(sumAmount);
+        calendarDTO.setDate(date);
 
         return calendarDTO;
     }

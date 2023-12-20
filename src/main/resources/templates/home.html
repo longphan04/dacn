@@ -8,6 +8,7 @@
     <link rel="stylesheet" th:href="@{/css/home.css}">
     <link rel="stylesheet" th:href="@{/css/font-awesome.all.min.css}">
     <script th:src="@{/js/font-awesome.all.min.js}"></script>
+    <script th:src="@{/js/home.js}"></script>
     <title>Home</title>
 </head>
 <body>
@@ -89,12 +90,12 @@
             </div>
         </div>
         <div class="drawer">
-            <span><i class="fa-solid fa-money-bill-trend-up"></i></span>
+            <span><i class="fa-solid fa-money-bill-trend-up" onclick="goToDeposit()"></i></span>
             <span><i class="fa-solid fa-money-bill-trend-up fa-flip-vertical"></i></span>
             <div class="menu-btn"><i class="fa-solid fa-house-user"></i></div>
             <span><!---to evenly space icons---></span>
-            <span><i class="fa-regular fa-calendar-days"></i></span>
-            <span><i class="fa-solid fa-chart-pie"></i></span>
+            <span><i class="fa-regular fa-calendar-days" onclick="goToCalendar()"></i></span>
+            <span><i class="fa-solid fa-chart-pie" onclick="goToStatistical()"></i></span>
         </div>
 
     </div>
