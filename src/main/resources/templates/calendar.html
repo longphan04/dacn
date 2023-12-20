@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" th:href="@{/calendar.css}">
+    <link rel="stylesheet" th:href="@{/css/calendar.css}">
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
 </head>
@@ -48,7 +48,6 @@
     <input type="text" id="sumAmount" readonly th:value="${calendarDTO.getSumAmount()}">
 </div>
 <form id="form" th:action="@{/calendar}" method="post">
-    <input type="hidden" name="userId" th:value="${calendarDTO.getUserId()}">
     <input type="hidden" name="date" id="date" >
 </form>
 
@@ -57,6 +56,6 @@
 var date = new Date([[${calendarDTO.getDate()}]]);
 /*]]>*/
 </script>
-<script th:src="@{/calendar.js}"></script>
+<script th:src="@{/js/calendar.js}"></script>
 </body>
 </html>
