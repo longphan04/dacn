@@ -1,6 +1,8 @@
 package com.example.dacn.controllers;
 
+import com.example.dacn.dtos.HomeDTO;
 import com.example.dacn.dtos.UserDTO;
+import com.example.dacn.services.HomeService;
 import com.example.dacn.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,13 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping({"home"})
 @RequiredArgsConstructor
 public class HomeController {
-    private final UserService userService;
+    private final HomeService homeService;
+
     @GetMapping
     public String home(Model model) {
-        String username = userService.getLoginUsername();
-        UserDTO userDTO = userService.getUserByUsername(username);
-
-        model.addAttribute("categoryList", userDTO.getCategoryList());
+        HomeDTO homeDTO = homeService.loadHomeData();
+        model.addAttribute("homeDTO", homeDTO);
         return "home";
     }
 }

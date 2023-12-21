@@ -1,92 +1,104 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Income and Expenses</title>
-    <script th:src="@{/js/home.js}"></script>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.all.min.css}">
+    <script th:src="@{/js/font-awesome.all.min.js}"></script>
+    <title>Home</title>
 </head>
 <body>
-<div>
-    <div class="tab">
-        <button class="tablinks active" onclick="toggleType(event, 'Deposit')">Deposit</button>
-        <button class="tablinks" onclick="toggleType(event, 'Withdraw')">Withdraw</button>
+<div class="container">
+    <div class="iphone">
+        <div class="header">
+            <div class="header-summary">
+                <div class="summary-text">
+                    My Balance
+                </div>
+                <div class="summary-balance">
+                    <span th:text="${homeDTO.getCurrentBalanceStr()}">2.000.000</span><span> VNĐ</span>
+                </div>
+                <div class="summary-text-2" th:with="differenceAmount=${homeDTO.getDepositAmount() - homeDTO.getWithdrawAmount()}">
+                    <span th:if="${differenceAmount > 0}">+</span><span th:text="${differenceAmount}">100,000</span>
+                </div>
+            </div>
+            <div class="user-profile">
+                <img th:src="@{/img/avatar.png}" class="user-photo" alt="avatar">
+            </div>
+        </div>
+        <div class="content">
+            <div class="card">
+                <div class="upper-row">
+                    <div class="card-item">
+                        <span>Deposit</span>
+                        <span th:text="${homeDTO.getDepositAmountStr()}">300,000<span class="dollar">₫</span></span>
+                    </div>
+                    <div class="card-item">
+                        <span>Withdraw</span>
+                        <span th:text="${homeDTO.getWithdrawAmountStr()}">200,000<span class="dollar">₫</span></span>
+                    </div>
+                </div>
+                <div class="lower-row">
+                    <div class="icon-item" th:each="topDeposit : ${homeDTO.getTopDeposits()}">
+                        <div class="icon" th:text="${topDeposit.getPercentStr() + '%'}">50%</div>
+                        <div class="icon-text" th:text="${topDeposit.getCategoryName()}">Tiền Thưởng</div>
+                    </div>
+                    <div class="icon-item" th:each="topWithdraw: ${homeDTO.getTopWithdraws()}">
+                        <div class="icon red" th:text="${topWithdraw.getPercentStr() + '%'}">0%</div>
+                        <div class="icon-text" th:text="${topWithdraw.getCategoryName()}">Phí Sinh Hoạt</div>
+                    </div>
+                </div>
+            </div>
+            <div class="transactions"><span class="t-desc">Recent Transactions</span>
+                <div class="transaction">
+                    <div class="t-icon-container">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                    </div>
+                    <div class="t-details">
+                        <div class="t-title">Tiền Tiết Kiệm</div>
+                        <div class="t-time">05/12/2023</div>
+                    </div>
+                    <div class="t-amount">+&nbsp;50,000₫</div>
+                </div>
+
+                <div class="transaction">
+                    <div class="t-icon-container">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                    </div>
+                    <div class="t-details">
+                        <div class="t-title">Tiền Lãi</div>
+                        <div class="t-time">01/11/2023</div>
+                    </div>
+                    <div class="t-amount">+&nbsp;20,000₫</div>
+                </div>
+
+                <div class="transaction">
+                    <div class="t-icon-container">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </div>
+                    <div class="t-details">
+                        <div class="t-title">Tiền Tiêu Vặt</div>
+                        <div class="t-time">14/09/2023</div>
+                    </div>
+                    <div class="t-amount red">-&nbsp;100,000₫
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="drawer">
+            <span><i class="fa-solid fa-money-bill-trend-up"></i></span>
+            <span><i class="fa-solid fa-money-bill-trend-up fa-flip-vertical"></i></span>
+            <div class="menu-btn"><i class="fa-solid fa-house-user"></i></div>
+            <span><!---to evenly space icons---></span>
+            <span><i class="fa-regular fa-calendar-days"></i></span>
+            <span><i class="fa-solid fa-chart-pie"></i></span>
+        </div>
+
     </div>
-    <div id="Deposit" class="tabcontent">
-        <form method="post" th:action="@{/finance/deposit}">
-            <input type="submit" value="OK"/><br>
-            <label for="depositDate">Days</label>
-            <input type="date" id="depositDate" name="date"><br>
-            <label for="depositAmount">Money</label>
-            <input type="text" id="depositAmount" name="amount"><br>
-            <label for="depositDescription">Note</label>
-            <input type="text" id="depositDescription" name="description"><br>
-            <input type="hidden" id="depositCategoryId" name="categoryId">
-        </form>
-        <h3>Category</h3>
-        <input type="button" th:each="category, iter : ${categoryList}"
-               th:value="${category.getCategoryName()}"
-               th:onclick="|selectCategory(${category.getCategoryId()})|"
-               th:if="${category.getCategoryType().equals('DEPOSIT')}"
-        >
-    </div>
-    <div id="Withdraw" class="tabcontent" style="display: none">
-        <form method="post" th:action="@{/finance/withdraw}">
-            <input type="submit" value="OK"/><br>
-            <label for="date">Days</label>
-            <input type="date" id="date" name="date"><br>
-            <label for="amount">Money</label>
-            <input type="text" id="amount" name="amount"><br>
-            <label for="description">Note</label>
-            <input type="text" id="description" name="description"><br>
-            <input type="hidden" id="categoryId" name="categoryId">
-        </form>
-        <h3>Category</h3>
-        <input type="button" th:each="category, iter : ${categoryList}"
-               th:value="${category.getCategoryName()}"
-               th:onclick="|selectCategory(${category.getCategoryId()})|"
-               th:if="${category.getCategoryType().equals('WITHDRAW')}">
-    </div>
-    <div>
-        <form th:action="@{/calendar}" method="post">
-            <input type="submit" id="calendar" value="Calendar">
-            <input type="hidden" name="date" value="12/21/2023">
-        </form>
-        <form th:action="@{/statistical}" method="post">
-            <input type="submit" id="statistical" name="statistical" value="statistical">
-            <input type="hidden" name="date" value="">
-        </form>
-    </div>
-
-
-    <script>
-        function toggleType(evt, type) {
-            // Declare all variables
-            var i, tabcontent, tablinks;
-
-            // Get all elements with class="tabcontent" and hide them
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-
-            // Get all elements with class="tablinks" and remove the class "active"
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-
-            // Show the current tab, and add an "active" class to the button that opened the tab
-            document.getElementById(type).style.display = "block";
-            evt.currentTarget.className += " active";
-        }
-
-        function selectCategory(categoryId) {
-            document.querySelector("#categoryId").value = categoryId;
-            document.querySelector("#depositCategoryId").value = categoryId;
-        }
-    </script>
 </div>
 </body>
+
 </html>

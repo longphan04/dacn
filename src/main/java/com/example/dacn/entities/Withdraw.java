@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
 
 @Entity(name = "withdraws")
@@ -16,8 +17,12 @@ public class Withdraw {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userId;
-    private Long categoryId;
+
+    @ManyToOne
+    private User user;
+
+    @ManyToOne
+    private Category category;
     private Double amount;
     private Timestamp date;
     private String description;

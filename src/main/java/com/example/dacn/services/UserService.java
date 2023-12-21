@@ -37,6 +37,9 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = getUserEntityByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException(String.format("Username %s not found", username));
+        }
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), AuthorityUtils.createAuthorityList("USER"));
     }
 
@@ -80,7 +83,7 @@ public class UserService implements UserDetailsService {
     private UserDTO convertToUserDTO(User user) {
         return UserDTO.builder()
                 .username(user.getUsername())
-                .categoryList(categoryService.convertToCategoryDTO(user.getCategoryList()))
+                .categoryList(categoryService.convertToCategoryDTOs(user.getCategoryList()))
                 .build();
     }
 
