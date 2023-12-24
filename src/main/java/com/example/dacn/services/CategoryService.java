@@ -19,12 +19,16 @@ public class CategoryService {
         return categories.stream().filter(category -> category.getId() <= 8).collect(Collectors.toList());
     }
 
-    public List<CategoryDTO> convertToCategoryDTO(List<Category> categories) {
-        return categories.stream().map(category -> CategoryDTO.builder()
+    public List<CategoryDTO> convertToCategoryDTOs(List<Category> categories) {
+        return categories.stream().map(this::convertToCategoryDTO).collect(Collectors.toList());
+    }
+
+    public CategoryDTO convertToCategoryDTO(Category category) {
+        return CategoryDTO.builder()
                 .categoryId(category.getId())
                 .categoryName(category.getName())
                 .categoryType(category.getType())
-                .build()).collect(Collectors.toList());
+                .build();
     }
 
 }

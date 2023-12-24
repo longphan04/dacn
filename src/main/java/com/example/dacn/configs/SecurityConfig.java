@@ -1,5 +1,6 @@
 package com.example.dacn.configs;
 
+import com.example.dacn.dtos.RegisterDTO;
 import com.example.dacn.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -27,28 +28,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .authorizeRequests(authorize -> authorize
-                    .antMatchers("/login", "/register", "/js/**", "/css/**")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated()
-            )
-            .formLogin()
-            .loginPage("/login")
-            .defaultSuccessUrl("/home", true)
-            .permitAll();
+                .authorizeRequests(authorize -> authorize
+                        .antMatchers("/login", "/register"
+                                , "/js/**", "/css/**"
+                                , "/img/**", "/webfonts/**")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated()
+                )
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/home", true)
+                .permitAll();
     }
 
     @Bean
     UserDetailsManager users(DataSource dataSource) {
         JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
         if (!jdbcUserDetailsManager.userExists("admin")) {
-            UserDetails user = User.builder()
+            userService.createUser(RegisterDTO.builder()
                     .username("admin")
                     .password("{noop}123")
-                    .roles("USER")
-                    .build();
-            jdbcUserDetailsManager.createUser(user);
+                    .build());
         }
         return jdbcUserDetailsManager;
     }
