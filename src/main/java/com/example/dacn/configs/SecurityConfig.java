@@ -8,8 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 
@@ -44,13 +42,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     UserDetailsManager users(DataSource dataSource) {
-        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-        if (!jdbcUserDetailsManager.userExists("admin")) {
-            userService.createUser(RegisterDTO.builder()
-                    .username("admin")
-                    .password("{noop}123")
-                    .build());
-        }
-        return jdbcUserDetailsManager;
+        return new JdbcUserDetailsManager(dataSource);
     }
 }

@@ -24,25 +24,25 @@ public class HomeService {
         Double currentMonthWithdrawAmount = withdrawService.getCurrentMonthWithdrawAmount();
 
         List<DepositDTO> topDepositsOfThisMonth = depositService.getTopDepositsOfThisMonth();
-        while (topDepositsOfThisMonth.size() < 2) {
-            topDepositsOfThisMonth.add(DepositDTO.builder()
-                    .amount(0D)
-                    .categoryDTO(CategoryDTO.builder()
-                            .categoryType("DEPOSIT")
-                            .categoryName("N/A")
-                            .build())
-                    .build());
-        }
+//        while (topDepositsOfThisMonth.size() < 2) {
+//            topDepositsOfThisMonth.add(DepositDTO.builder()
+//                    .amount(0D)
+//                    .categoryDTO(CategoryDTO.builder()
+//                            .categoryType("DEPOSIT")
+//                            .categoryName("N/A")
+//                            .build())
+//                    .build());
+//        }
         List<WithdrawDTO> topWithdrawsOfThisMonth = withdrawService.getTopWithdrawsOfThisMonth();
-        while (topWithdrawsOfThisMonth.size() < 2) {
-            topWithdrawsOfThisMonth.add(WithdrawDTO.builder()
-                    .amount(0D)
-                    .categoryDTO(CategoryDTO.builder()
-                            .categoryType("WITHDRAW")
-                            .categoryName("N/A")
-                            .build())
-                    .build());
-        }
+//        while (topWithdrawsOfThisMonth.size() < 2) {
+//            topWithdrawsOfThisMonth.add(WithdrawDTO.builder()
+//                    .amount(0D)
+//                    .categoryDTO(CategoryDTO.builder()
+//                            .categoryType("WITHDRAW")
+//                            .categoryName("N/A")
+//                            .build())
+//                    .build());
+//        }
 
         return HomeDTO.builder()
                 .currentBalance(sumAllDeposit - sumAllWithdraw)

@@ -8,6 +8,7 @@
     <link rel="stylesheet" th:href="@{/css/deposit.css}">
     <link rel="stylesheet" th:href="@{/css/font-awesome.all.min.css}">
     <script th:src="@{/js/font-awesome.all.min.js}"></script>
+    <script th:src="@{/js/deposit.js}"></script>
     <title>Deposit</title>
 </head>
 <body>
@@ -31,61 +32,38 @@
         </div>
         <div class="content">
             <div class="card">
-                <div class="upper-row">
-                    <div class="card-item">
-                        <span>Deposit</span>
-                        <span>300,000<span class="dollar">₫</span></span>
+                <form id="depositForm" method="post" th:action="@{/finance/deposit}">
+                    <div class="form-div">
+                        <div class="form-item">
+                            <label for="datepicker">Date</label>
+                            <input type="date" id="datepicker">
+                            <input type="hidden" name="date" id="date">
+                        </div>
+                        <div class="form-item">
+                            <label for="amount">Amount</label>
+                            <div>
+                                <i class="fa-solid fa-coins"></i>
+                                <input type="text" id="amount" name="amount" placeholder="0.0">
+                            </div>
+                        </div>
+                        <div class="form-item">
+                            <label for="description">Description</label>
+                            <div>
+                                <i class="fa-solid fa-comments-dollar"></i>
+                                <input type="text" id="description" name="description" placeholder="_____________">
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-item">
-                        <span>Withdraw</span>
-                        <span>200,000<span class="dollar">₫</span></span>
+                    <div class="category-div">
+                        <div class="category-line">
+                            <input type="button" th:each="category,state : ${financeDTO.getCategoryDTOList()}" th:if="${category.getCategoryType() == 'DEPOSIT'}" th:value="${category.getCategoryName()}" th:class="${state.index == 0 ? 'active' : ''}" th:onclick="|selectCategory(this, '${category.getCategoryId()}')|">
+                        </div>
+                        <input type="hidden" th:value="${financeDTO.getCategoryDTOList().get(0).getCategoryId()}" name="categoryId" id="categoryId">
                     </div>
-                </div>
-                <div class="lower-row">
-                    <div class="icon-item">
-                        <div class="icon">50%</div>
-                        <div class="icon-text">Tiền Thưởng</div>
+                    <div class="submit-btn-div">
+                        <input id="submitBtn" type="button" value="Deposit" onclick="submitForm()">
                     </div>
-                    <div class="icon-item">
-                        <div class="icon red">0%</div>
-                        <div class="icon-text">Phí Sinh Hoạt</div>
-                    </div>
-                </div>
-            </div>
-            <div class="transactions"><span class="t-desc">Recent Transactions</span>
-                <div class="transaction">
-                    <div class="t-icon-container">
-                        <i class="fa-solid fa-right-to-bracket"></i>
-                    </div>
-                    <div class="t-details">
-                        <div class="t-title">Tiền Tiết Kiệm</div>
-                        <div class="t-time">05/12/2023</div>
-                    </div>
-                    <div class="t-amount">+&nbsp;50,000₫</div>
-                </div>
-
-                <div class="transaction">
-                    <div class="t-icon-container">
-                        <i class="fa-solid fa-right-to-bracket"></i>
-                    </div>
-                    <div class="t-details">
-                        <div class="t-title">Tiền Lãi</div>
-                        <div class="t-time">01/11/2023</div>
-                    </div>
-                    <div class="t-amount">+&nbsp;20,000₫</div>
-                </div>
-
-                <div class="transaction">
-                    <div class="t-icon-container">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                    </div>
-                    <div class="t-details">
-                        <div class="t-title">Tiền Tiêu Vặt</div>
-                        <div class="t-time">14/09/2023</div>
-                    </div>
-                    <div class="t-amount red">-&nbsp;100,000₫
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
         <div class="drawer">

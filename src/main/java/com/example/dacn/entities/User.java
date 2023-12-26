@@ -40,7 +40,7 @@ public class User {
                     referencedColumnName = "id"
             ),
             inverseJoinColumns = @JoinColumn(
-                    name = "category_is",
+                    name = "category_id",
                     referencedColumnName = "id"
             )
     )

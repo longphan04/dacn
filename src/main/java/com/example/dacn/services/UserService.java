@@ -24,13 +24,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
-    private final UserRepository userRepository;
     private final CategoryService categoryService;
+    private final UserRepository userRepository;
 
     private UserDetailsManager userDetailsManager;
 
     @Autowired
-    void setUserDetailsManager(@Lazy UserDetailsManager userDetailsManager) {
+    void setLazyField(@Lazy UserDetailsManager userDetailsManager) {
         this.userDetailsManager = userDetailsManager;
     }
 

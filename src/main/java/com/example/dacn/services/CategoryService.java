@@ -31,4 +31,8 @@ public class CategoryService {
                 .build();
     }
 
+    public List<CategoryDTO> getAvailableUserCategories(String username) {
+        List<Category> categories = categoryRepository.findAllByUser(username);
+        return convertToCategoryDTOs(categories);
+    }
 }
