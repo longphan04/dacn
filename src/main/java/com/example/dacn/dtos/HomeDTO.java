@@ -15,6 +15,11 @@ public class HomeDTO {
     private Double withdrawAmount;
     private List<TopDepositDTO> topDeposits;
     private List<TopWithdrawDTO> topWithdraws;
+    private List<DepositDTO> recentTransactions;
+
+    public String getDifferenceAmountStr() {
+        return FORMATTER.format(this.depositAmount - this.withdrawAmount);
+    }
 
     public String getCurrentBalanceStr() {
         return FORMATTER.format(currentBalance);

@@ -8,6 +8,7 @@
     <link rel="stylesheet" th:href="@{/css/deposit.css}">
     <link rel="stylesheet" th:href="@{/css/font-awesome.all.min.css}">
     <script th:src="@{/js/font-awesome.all.min.js}"></script>
+    <script th:src="@{/js/common.js}"></script>
     <script th:src="@{/js/deposit.js}"></script>
     <title>Deposit</title>
 </head>
@@ -20,10 +21,10 @@
                     My Balance
                 </div>
                 <div class="summary-balance">
-                    <span>2.000.000</span><span> VNĐ</span>
+                    <span th:text="${currentBalance}">2.000.000</span><span> VNĐ</span>
                 </div>
                 <div class="summary-text-2">
-                    <span>100,000</span>
+                    <span></span>
                 </div>
             </div>
             <div class="user-profile">
@@ -67,12 +68,12 @@
             </div>
         </div>
         <div class="drawer">
-            <span><i class="fa-solid fa-money-bill-trend-up"></i></span>
-            <span><i class="fa-solid fa-money-bill-trend-up fa-flip-vertical"></i></span>
-            <div class="menu-btn"><i class="fa-solid fa-house-user"></i></div>
+            <span><i class="fa-solid fa-money-bill-trend-up" onclick="goToDeposit()"></i></span>
+            <span><i class="fa-solid fa-money-bill-trend-up fa-flip-vertical" onclick="goToWithdraw()"></i></span>
+            <div class="menu-btn"><i class="fa-solid fa-house-user" onclick="goToHome()"></i></div>
             <span><!---to evenly space icons---></span>
-            <span><i class="fa-regular fa-calendar-days"></i></span>
-            <span><i class="fa-solid fa-chart-pie"></i></span>
+            <span><i class="fa-regular fa-calendar-days" onclick="goToCalendar()"></i></span>
+            <span><i class="fa-solid fa-power-off" onclick="logout()"></i></span>
         </div>
 
     </div>

@@ -10,6 +10,11 @@ import com.example.dacn.utils.DateTimeUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Tuple;
+import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,9 +52,31 @@ public class DepositService {
         return depositRepository.getCurrentMonthDepositAmount(username);
     }
 
-    public List<DepositDTO> getTopDepositsOfThisMonth() {
+    public List<DepositDTO> getRecentTransactions() {
         String username = userService.getLoginUsername();
-        return convertToDepositDTO(depositRepository.getTopDepositsOfThisMonth(username));
+        List<Tuple> tuples = depositRepository.getRecentTransactions(username);
+        return tuples.stream().map(tuple -> DepositDTO.builder()
+                .amount(tuple.get("amount", Double.class))
+                .date(tuple.get("date", Timestamp.class))
+                .description(tuple.get("description", String.class))
+                .categoryDTO(CategoryDTO.builder()
+                        .categoryName(tuple.get("categoryName", String.class))
+                        .categoryId(tuple.get("categoryId", BigInteger.class).longValue())
+                        .build())
+                .build()).collect(Collectors.toList());
+    }
+
+    public List<DepositDTO> getTransactionsOnDay(String username, Date date) {
+        List<Tuple> tuples = depositRepository.getTransactionsOnDay(username, date);
+        return tuples.stream().map(tuple -> DepositDTO.builder()
+                .amount(tuple.get("amount", Double.class))
+                .date(tuple.get("date", Timestamp.class))
+                .description(tuple.get("description", String.class))
+                .categoryDTO(CategoryDTO.builder()
+                        .categoryName(tuple.get("categoryName", String.class))
+                        .categoryId(tuple.get("categoryId", BigInteger.class).longValue())
+                        .build())
+                .build()).collect(Collectors.toList());
     }
 
     private List<DepositDTO> convertToDepositDTO(List<Deposit> deposits) {
@@ -60,4 +87,5 @@ public class DepositService {
                 .categoryDTO(categoryService.convertToCategoryDTO(deposit.getCategory()))
                 .build()).collect(Collectors.toList());
     }
+
 }

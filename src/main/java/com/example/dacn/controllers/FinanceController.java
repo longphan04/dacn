@@ -6,6 +6,7 @@ import com.example.dacn.dtos.WithdrawDTO;
 import com.example.dacn.services.CategoryService;
 import com.example.dacn.services.DepositService;
 import com.example.dacn.services.FinanceService;
+import com.example.dacn.services.HomeService;
 import com.example.dacn.services.UserService;
 import com.example.dacn.services.WithdrawService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.text.DecimalFormat;
+
 @Controller
 @RequestMapping("finance")
 @RequiredArgsConstructor
@@ -23,18 +26,25 @@ public class FinanceController {
     private final DepositService depositService;
     private final WithdrawService withdrawService;
     private final FinanceService financeService;
+    private final HomeService homeService;
 
     @GetMapping("deposit")
     public String depositIndex(Model model) {
         FinanceDTO financeDTO = financeService.initDepositDTO();
+        String currentBalanceStr = new DecimalFormat("###,###,###").format(homeService.getCurrentBalance());
+
         model.addAttribute("financeDTO", financeDTO);
+        model.addAttribute("currentBalance", currentBalanceStr);
         return "deposit";
     }
 
     @GetMapping("withdraw")
     public String withdrawIndex(Model model) {
         FinanceDTO financeDTO = financeService.initDepositDTO();
+        String currentBalanceStr = new DecimalFormat("###,###,###").format(homeService.getCurrentBalance());
+
         model.addAttribute("financeDTO", financeDTO);
+        model.addAttribute("currentBalance", currentBalanceStr);
         return "withdraw";
     }
 

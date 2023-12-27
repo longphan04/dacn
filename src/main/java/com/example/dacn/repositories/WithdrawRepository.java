@@ -25,6 +25,4 @@ public interface WithdrawRepository extends JpaRepository<Withdraw, Integer> {
     @Query(value = "select ifnull(sum(amount), 0) from withdraws inner join users on users.id = withdraws.user_id where username = ?1 and year(date) = year(now()) and month(date) = month(now())", nativeQuery = true)
     Double getCurrentMonthWithdrawAmount(@Param("username") String username);
 
-    @Query(value = "select * from withdraws inner join users on users.id = withdraws.user_id where username = ?1 and year(date) = year(now()) and month(date) = month(now()) order by amount desc limit 2", nativeQuery = true)
-    List<Withdraw> getTopWithdrawsOfThisMonth(@Param("username") String username);
 }

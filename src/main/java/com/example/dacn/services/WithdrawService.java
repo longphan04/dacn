@@ -40,10 +40,10 @@ public class WithdrawService {
         return withdrawRepository.getCurrentMonthWithdrawAmount(username);
     }
 
-    public List<WithdrawDTO> getTopWithdrawsOfThisMonth() {
-        String username = userService.getLoginUsername();
-        return this.convertToWithdrawDTOs(withdrawRepository.getTopWithdrawsOfThisMonth(username));
-    }
+//    public List<WithdrawDTO> getTopWithdrawsOfThisMonth() {
+//        String username = userService.getLoginUsername();
+//        return this.convertToWithdrawDTOs(withdrawRepository.getTopWithdrawsOfThisMonth(username));
+//    }
 
     public List<WithdrawDTO> convertToWithdrawDTOs(List<Withdraw> withdrawList) {
         return withdrawList.stream().map(this::convertToWithdrawDTO).collect(Collectors.toList());
